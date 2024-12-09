@@ -3,8 +3,18 @@ import {StyleSheet, Text, View} from 'react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import Pile from './Pile';
 import React, { useMemo, useRef, useEffect } from 'react'; // Add useEffect here
+import { useDispatch } from 'react-redux';
 
-const Pocket = React.memo(({color, player}) => {
+const Pocket = React.memo(({color, player,data}) => {
+  const dispatch = useDispatch()
+  const handlePress = async value=>{
+    let playerNo = value?.id[0]
+    switch(playerNo)
+    {
+      case 'A':
+        playerNo = 'player1'
+    }
+  }
   useEffect(() => {
     console.warn(color);
   }, []);
