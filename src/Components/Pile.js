@@ -25,7 +25,7 @@ const Pile = ({color, cell, player, onPress, pieceId}) => {
   const pileImage = BackgroundImage.GetImage(color);
 
   const isPileEnabled = useMemo(
-    () => player === currentPlayerCellSelection,
+    () => player === currentPlayerPileSelection,
     [player, currentPlayerCellSelection],
   );
 
@@ -35,8 +35,8 @@ const Pile = ({color, cell, player, onPress, pieceId}) => {
   );
 
 const isForwardable = useCallback(()=> {
-  const piece = playerpieces?.find(item=> item.is === pieceId)
-  return piece && piece.travelCount + diceNo
+  const piece = playerpieces?.find(item=> item.id === pieceId)
+  return piece && piece.travelCount + diceNo <= 57
 },[playerpieces, pieceId,diceNo] )
 
   useEffect(() => {
@@ -61,9 +61,15 @@ const isForwardable = useCallback(()=> {
     [rotation],
   );
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity style={styles.container} activeOpacity={0.5}
+    disabled={!(cell? isCellEnabled && isForwardable() :isPileEnabled)}
+    onPress={onPress}
+    >
       <View style={styles.hollowCircle}>
-        <View style={styles.dashedCircleContainer}>
+      
+       {(cell? isCellEnabled && isForwardable() :isPileEnabled) 
+       && 
+       <View style={styles.dashedCircleContainer}>
           <Animated.View
             style={[
               styles.dashedCircle,
@@ -82,7 +88,7 @@ const isForwardable = useCallback(()=> {
               />
             </Svg>
           </Animated.View>
-        </View>
+        </View>}
         <Image
           source={pileImage}
           style={{

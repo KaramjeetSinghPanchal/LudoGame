@@ -57,7 +57,7 @@ const Dice = React.memo(({color, rotate, player, data}) => {
 
   const handleDicePress = async () => {
     const newDiceNo = Math.floor(Math.random() * 6) + 1;
-    playSound('dice_roll');
+    // playSound('dice_roll');
     setDiceRolling(true);
     await delay(800);
     dispatch(updateDiceNo({diceNo: newDiceNo}));
@@ -96,7 +96,7 @@ const Dice = React.memo(({color, rotate, player, data}) => {
       }
    
     if (newDiceNo == 6) {
-      enablePileSelection({playerNo: player});
+      dispatch(enablePileSelection({playerNo: player}));
     }
     dispatch(enableCellSelection({playerNo: player}));
   };

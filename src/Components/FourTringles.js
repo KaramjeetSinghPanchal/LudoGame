@@ -1,12 +1,84 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {Colors} from '../constants/Colors';
 import LottieView from 'lottie-react-native';
 import Fireworks from '../assets/animation/firework.json';
 import Svg, {Polygon} from 'react-native-svg';
-const FourTringles = () => {
+import {useDispatch, useSelector} from 'react-redux';
+import {useEffect} from 'react';
+import {selectFireworks} from './redux/reducers/gameSelectors';
+import {updateFireworks} from './redux/reducers/gameSlice';
+const FourTringles = ({player1, player2, player3, player4}) => {
   const size = 300;
   const [blast, setBlast] = useState(false);
+  const isFirework = useSelector(selectFireworks);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isFirework) {
+      setBlast(true);
+      const timer = setTimeout(() => {
+        setBlast(false);
+        dispact(updateFireworks(false));
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [isFirework, dispatch]);
+
+  const playerData = useMemo(
+    () =>
+      [
+        {
+          player: player1,
+          top: 55,
+          left: 15,
+          pieceColor: Colors.red,
+          translate: 'translateX',
+        },
+        {
+          player: player3,
+          top: 52,
+          left: 15,
+          pieceColor: Colors.green,
+          translate: 'translateY',
+        },
+        {
+          player: player2,
+          top: 20,
+          left: -2,
+          pieceColor: Colors.yellow,
+          translate: 'translateX',
+        },
+        {
+          player: player4,
+          top: 20,
+          right: -2,
+          pieceColor: Colors.blue,
+          translate: 'translateX',
+        },
+      ][(player1, player2, player3, player4)],
+  );
+
+
+  const renderPlayerPieces = useCallback(
+    (data,index) =>(
+      <PlayerPieces
+      key={index}
+      player={data?.player.filter(item => item.traverlCount === 57)} 
+      style={{
+        top:data?.top,
+        bottom: data?.bottom,
+        left: data.left,
+        right: data.right,
+      }}
+      pieceColor={data.pieceColor}
+      translate={data.translate}
+      />
+      
+    )
+  )
+
   return (
     <View style={styles.maincontainer}>
       {blast && (
@@ -36,7 +108,7 @@ const FourTringles = () => {
         />
 
         <Polygon
-          points={`0,0 ${size/2},${size / 2} 0,${size}`}
+          points={`0,0 ${size / 2},${size / 2} 0,${size}`}
           fill={Colors.green}
         />
       </Svg>

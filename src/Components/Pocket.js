@@ -59,21 +59,36 @@ const Pocket = React.memo(({color, player, data}) => {
         </View>
 
         <View style={[styles.flexrow, {marginTop: 20}]}>
-          <Plot pieceNo={0} onPress={handlePress} data={data} player={player} color={color} />
-          <Plot pieceNo={1} onPress={handlePress} data={data} player={player} color={color} />
+          <Plot
+            pieceNo={2}
+            onPress={handlePress}
+            data={data}
+            player={player}
+            color={color}
+          />
+          <Plot
+            pieceNo={3}
+            onPress={handlePress}
+            data={data}
+            player={player}
+            color={color}
+          />
         </View>
       </View>
     </View>
   );
 });
 
-const Plot = ({pieceNo, player, color,data,onPress}) => {
+const Plot = ({pieceNo, player, color, data, onPress}) => {
   return (
     <View style={[styles.plot, {backgroundColor: color}]}>
-      {data && data[pieceNo[0] == onPress[0]]?
-       <Pile color={color} player={player} />
-    :''}
-     
+      {data && data[pieceNo]?.pos === 0 && (
+        <Pile
+          color={color}
+          onPress={() => onPress(data[pieceNo])}
+          player={player}
+        />
+      )}
     </View>
   );
 };

@@ -17,7 +17,7 @@ export const gameSlice = createSlice({
       state.touchDiceBlock = true;
       state.cellSelectionPlayer = action.payload.playerNo;
     },
-    disableTouch: (state, action) => {
+    disableTouch: state => {
       state.touchDiceBlock = true;
       state.cellSelectionPlayer = -1;
       state.pileSelectionPlayer = -1;
